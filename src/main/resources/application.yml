@@ -2,12 +2,13 @@ server:
     port: 8761
 eureka:
     instance:
-        hostname: node_180
+        hostname: node-yrh-180
     client:
         registerWithEureka: false
         fetchRegistry: false
         serviceUrl:
             defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+        prefer-same-zone-eureka: true
     server:
         wait-time-in-ms-when-sync-empty: 0
         enable-self-preservation: false

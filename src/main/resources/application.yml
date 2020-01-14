@@ -1,17 +1,79 @@
-server:
-    port: 8761
-eureka:
-    instance:
-        hostname: node-yrh-180
-    client:
-        registerWithEureka: false
-        fetchRegistry: false
-        serviceUrl:
-            defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-        prefer-same-zone-eureka: true
-    server:
-        wait-time-in-ms-when-sync-empty: 0
-        enable-self-preservation: false
+custom:
+    eureka1: http://10.1.0.11:8761/eureka/
+    eureka2: http://10.2.0.22:8761/eureka/
+    eureka3: http://10.1.0.11:8762/eureka/
+    eureka4: http://10.2.0.22:8762/eureka/
 spring:
     application:
         name: tech-eureka-server
+    profiles:
+        active: node1
+server:
+    port: 8761
+
+eureka:
+    instance:
+        hostname: eureka1
+        prefer-ip-address: true
+        instance-id: ${spring.cloud.client.ip-address}:${server.port}
+        lease-expiration-duration-in-seconds: 30
+        lease-renewal-interval-in-seconds: 5
+    client:
+        registerWithEureka: true
+        fetchRegistry: true
+        serviceUrl:
+            defaultZone: ${custom.eureka2},${custom.eureka3},${custom.eureka4}
+        prefer-same-zone-eureka: true
+    server:
+        wait-time-in-ms-when-sync-empty: 0
+        enable-self-preservation: true
+        eviction-interval-timer-in-ms: 5000
+
+---
+# node1 environment 172.81.216.81
+# spring-boot:run -Dspring-boot.run.profiles=node1
+# java -jar tech-eureka-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=node1
+spring:
+    profiles: node1
+eureka:
+    instance:
+        hostname: eureka1
+    client:
+        serviceUrl:
+            defaultZone: ${custom.eureka2},${custom.eureka3},${custom.eureka4}
+
+---
+# node2 environment 175.24.103.167
+# mvn spring-boot:run -Dspring-boot.run.profiles=node2
+# java -jar tech-eureka-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=node2
+spring:
+    profiles: node2
+eureka:
+    instance:
+        hostname: eureka2
+    client:
+        serviceUrl:
+            defaultZone: ${custom.eureka1},${custom.eureka3},${custom.eureka4}
+
+---
+spring:
+    profiles: node3
+server:
+    port: 8762
+eureka:
+    instance:
+        hostname: eureka3
+    client:
+        serviceUrl:
+            defaultZone: ${custom.eureka1},${custom.eureka2},${custom.eureka4}
+---
+spring:
+    profiles: node4
+server:
+    port: 8762
+eureka:
+    instance:
+        hostname: eureka4
+    client:
+        serviceUrl:
+            defaultZone: ${custom.eureka1},${custom.eureka2},${custom.eureka3}

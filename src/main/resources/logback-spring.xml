@@ -4,7 +4,13 @@
     <contextName>im-server-rest</contextName>
     <!--<include resource="org/springframework/boot/logging/logback/base.xml" /> -->
 
-    <property name="LOG_PATH" value="../logs-all/tech-cloud/eureka/tech-eureka-server"/>
+
+    <springProfile name="dev">
+        <property name="LOG_PATH" value="../logs-all/tech-cloud/eureka/tech-eureka-server"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOG_PATH" value="../logs-all/tech-cloud/eureka/tech-eureka-server"/>
+    </springProfile>
 
     <!-- <withJansi>true</withJansi> %date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %caller{1..2} %highlight(%-5level) %magenta(%logger) - %cyan(%msg)%n -->
 

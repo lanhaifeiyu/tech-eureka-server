@@ -33,31 +33,31 @@ eureka:
 # node1 environment 172.81.216.81
 # spring-boot:run -Dspring-boot.run.profiles=node1
 # java -jar tech-eureka-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=node1
-spring:
-    profiles: node1
 eureka:
     instance:
         hostname: eureka1
     client:
         serviceUrl:
             defaultZone: ${custom.eureka2},${custom.eureka3},${custom.eureka4}
-
+spring:
+    config:
+        activate:
+            on-profile: node1
 ---
 # node2 environment 175.24.103.167
 # mvn spring-boot:run -Dspring-boot.run.profiles=node2
 # java -jar tech-eureka-server-0.0.1-SNAPSHOT.jar --spring.profiles.active=node2
-spring:
-    profiles: node2
 eureka:
     instance:
         hostname: eureka2
     client:
         serviceUrl:
             defaultZone: ${custom.eureka1},${custom.eureka3},${custom.eureka4}
-
----
 spring:
-    profiles: node3
+    config:
+        activate:
+            on-profile: node2
+---
 server:
     port: 8762
 eureka:
@@ -66,9 +66,11 @@ eureka:
     client:
         serviceUrl:
             defaultZone: ${custom.eureka1},${custom.eureka2},${custom.eureka4}
----
 spring:
-    profiles: node4
+    config:
+        activate:
+            on-profile: node3
+---
 server:
     port: 8762
 eureka:
@@ -77,3 +79,7 @@ eureka:
     client:
         serviceUrl:
             defaultZone: ${custom.eureka1},${custom.eureka2},${custom.eureka3}
+spring:
+    config:
+        activate:
+            on-profile: node4

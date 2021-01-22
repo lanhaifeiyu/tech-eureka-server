@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Logback configuration. See http://logback.qos.ch/manual/index.html -->
 <configuration scan="true" scanPeriod="10 seconds" debug="false">
-    <contextName>im-server-rest</contextName>
+    <contextName>tech-eureka-server</contextName>
     <!--<include resource="org/springframework/boot/logging/logback/base.xml" /> -->
 
 
